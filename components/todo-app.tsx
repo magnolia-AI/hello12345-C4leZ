@@ -52,7 +52,7 @@ export function TodoApp() {
   );
 
   useEffect(() => {
-    const saved = localStorage.getItem('notion-todos-v2');
+    const saved = localStorage.getItem('notion-todos-v3');
     if (saved) {
       setTodos(JSON.parse(saved));
     }
@@ -61,7 +61,7 @@ export function TodoApp() {
 
   useEffect(() => {
     if (isMounted) {
-      localStorage.setItem('notion-todos-v2', JSON.stringify(todos));
+      localStorage.setItem('notion-todos-v3', JSON.stringify(todos));
     }
   }, [todos, isMounted]);
 
@@ -91,7 +91,6 @@ export function TodoApp() {
     e?.preventDefault();
     if (!inputValue.trim()) return;
 
-    // Handle commands during submit if not clicked
     if (inputValue.startsWith('/')) {
       const cmd = inputValue.slice(1).toLowerCase();
       const found = COMMANDS.find(c => c.id.startsWith(cmd));
@@ -123,6 +122,12 @@ export function TodoApp() {
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
+  const updateTodo = (id: string, updates: Partial<Todo>) => {
+    setTodos(todos.map(todo => 
+      todo.id === id ? { ...todo, ...updates } : todo
+    ));
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
@@ -145,10 +150,10 @@ export function TodoApp() {
         <h1 className="text-4xl font-bold tracking-tight text-foreground flex items-center gap-2">
           Workspace
         </h1>
-        <p className="text-slate-500">Organize your thoughts with slash commands and drag & drop.</p>
+        <p className="text-slate-500">Click a task to edit or change its priority badge.</p>
       </header>
 
-      {/* Input Section with Slash Commands */}
+      {/* Input Section */}
       <section className="relative group">
         <form onSubmit={addTodo} className="flex items-center gap-2 px-1 hover:bg-slate-50 transition-colors rounded-md py-1 border-b border-transparent focus-within:border-slate-100">
           <div className="flex items-center gap-2 min-w-max">
@@ -168,7 +173,7 @@ export function TodoApp() {
             ref={inputRef}
             value={inputValue}
             onChange={handleInputChange}
-            placeholder="Type '/' for priority commands..."
+            placeholder="Type '/' for commands..."
             className="border-none shadow-none focus-visible:ring-0 text-base placeholder:text-slate-400 p-0 h-8 font-light"
           />
         </form>
@@ -188,16 +193,12 @@ export function TodoApp() {
               >
                 <span className="text-base">{cmd.icon}</span>
                 <span className="flex-1 font-medium text-slate-700">{cmd.label}</span>
-                {inputValue.slice(1).toLowerCase() === cmd.id[0] && (
-                  <span className="text-[10px] bg-slate-100 text-slate-400 px-1 py-0.5 rounded uppercase">Enter</span>
-                )}
               </button>
             ))}
           </div>
         )}
       </section>
 
-      {/* Todo Groups with DND Context */}
       <DndContext 
         sensors={sensors}
         collisionDetection={closestCenter}
@@ -221,6 +222,7 @@ export function TodoApp() {
                       todo={todo} 
                       onToggle={toggleTodo} 
                       onDelete={deleteTodo} 
+                      onUpdate={updateTodo}
                     />
                   ))
                 )}
@@ -238,6 +240,7 @@ export function TodoApp() {
                     todo={todo} 
                     onToggle={toggleTodo} 
                     onDelete={deleteTodo} 
+                    onUpdate={updateTodo}
                   />
                 ))}
               </div>
