@@ -54,7 +54,7 @@ export function FocusTimer() {
 
   return (
     <Card className="p-8 border-none shadow-none bg-transparent flex flex-col items-center justify-center space-y-6">
-      <div className="flex items-center space-x-2 text-slate-500 uppercase tracking-widest text-xs font-semibold">
+      <div className="flex items-center space-x-2 text-muted-foreground uppercase tracking-widest text-xs font-semibold">
         {mode === 'focus' ? (
           <><Target className="w-4 h-4" /> <span>Deep Work</span></>
         ) : (
@@ -62,13 +62,13 @@ export function FocusTimer() {
         )}
       </div>
 
-      <div className="text-8xl font-black tracking-tighter text-black">
+      <div className="text-8xl font-black tracking-tighter text-foreground">
         {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
       </div>
 
-      <div className="w-full max-w-xs h-1 bg-slate-100 rounded-full overflow-hidden">
+      <div className="w-full max-w-xs h-1 bg-muted rounded-full overflow-hidden">
         <div 
-          className="h-full bg-black transition-all duration-1000 ease-linear"
+          className="h-full bg-foreground transition-all duration-1000 ease-linear"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -78,7 +78,7 @@ export function FocusTimer() {
           variant="outline" 
           size="icon" 
           onClick={resetTimer}
-          className="rounded-full border-[#E5E5E5] hover:bg-slate-50"
+          className="rounded-full border-border hover:bg-muted"
         >
           <RotateCcw className="w-4 h-4" />
         </Button>
@@ -86,7 +86,7 @@ export function FocusTimer() {
           variant="default" 
           size="lg" 
           onClick={toggleTimer}
-          className="rounded-full px-8 bg-black hover:bg-zinc-800 text-white"
+          className="rounded-full px-8 bg-foreground text-background hover:bg-foreground/90"
         >
           {isActive ? (
             <><Pause className="w-4 h-4 mr-2" /> Pause</>

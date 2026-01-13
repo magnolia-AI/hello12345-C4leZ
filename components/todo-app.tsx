@@ -33,7 +33,7 @@ export const COMMANDS = [
   { id: 'high', label: 'High Priority', icon: '🔴', color: 'text-red-500' },
   { id: 'medium', label: 'Medium Priority', icon: '🟠', color: 'text-orange-500' },
   { id: 'low', label: 'Low Priority', icon: '🔵', color: 'text-blue-500' },
-  { id: 'clear', label: 'No Priority', icon: '⚪', color: 'text-slate-400' },
+  { id: 'clear', label: 'No Priority', icon: '⚪', color: 'text-muted-foreground' },
 ];
 
 export function TodoApp() {
@@ -131,28 +131,28 @@ export function TodoApp() {
   const completedTodos = todos.filter(t => t.completed);
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-20 space-y-12">
+    <div className="max-w-2xl mx-auto px-4 py-20 space-y-12 transition-colors duration-300">
       <header className="space-y-4">
         <h1 className="text-4xl font-bold tracking-tight text-foreground">
           Workspace
         </h1>
-        <p className="text-slate-500">Click a task to edit or change its priority.</p>
+        <p className="text-muted-foreground">Click a task to edit or change its priority.</p>
       </header>
 
       {/* Input Section */}
       <section className="relative group">
-        <form onSubmit={addTodo} className="flex items-center gap-2 px-1 hover:bg-slate-50 transition-colors rounded-md py-1">
+        <form onSubmit={addTodo} className="flex items-center gap-2 px-1 hover:bg-muted transition-colors rounded-md py-1">
           <div className="flex items-center gap-2 min-w-max">
             {activePriority ? (
                <span className={cn(
-                "text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border leading-none bg-white shadow-sm",
-                activePriority === 'high' ? 'text-red-500 border-red-100' : 
-                activePriority === 'medium' ? 'text-orange-500 border-orange-100' : 'text-blue-500 border-blue-100'
+                "text-[10px] uppercase font-bold px-1.5 py-0.5 rounded border leading-none bg-background shadow-sm",
+                activePriority === 'high' ? 'text-red-500 border-red-500/20' : 
+                activePriority === 'medium' ? 'text-orange-500 border-orange-500/20' : 'text-blue-500 border-blue-500/20'
               )}>
                 {activePriority}
               </span>
             ) : (
-              <Plus className="w-4 h-4 text-slate-400 group-focus-within:text-blue-500" />
+              <Plus className="w-4 h-4 text-muted-foreground group-focus-within:text-primary" />
             )}
           </div>
           <Input
@@ -160,13 +160,13 @@ export function TodoApp() {
             value={inputValue}
             onChange={handleInputChange}
             placeholder="Type '/' for priorities..."
-            className="border-none shadow-none focus-visible:ring-0 text-base placeholder:text-slate-400 p-0 h-8 font-light"
+            className="border-none shadow-none focus-visible:ring-0 text-base placeholder:text-muted-foreground p-0 h-8 font-light bg-transparent"
           />
         </form>
 
-        {showCommands && (
-          <div className="absolute top-full left-0 w-64 bg-white border border-slate-200 rounded-lg shadow-[0_10px_30px_rgba(0,0,0,0.1)] z-50 mt-1 py-1 animate-in fade-in slide-in-from-top-1 duration-200">
-            <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+      {showCommands && (
+          <div className="absolute top-full left-0 w-64 bg-popover border border-border rounded-lg shadow-lg z-50 mt-1 py-1 animate-in fade-in slide-in-from-top-1 duration-200">
+            <div className="px-3 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-1.5">
               <Command className="w-3 h-3" />
               Priorities
             </div>
@@ -175,10 +175,10 @@ export function TodoApp() {
                 key={cmd.id}
                 type="button"
                 onClick={() => applyCommand(cmd.id)}
-                className="w-full flex items-center gap-3 px-3 py-1.5 hover:bg-slate-50 text-sm text-left transition-colors"
+                className="w-full flex items-center gap-3 px-3 py-1.5 hover:bg-muted text-sm text-left transition-colors"
               >
                 <span className="text-base">{cmd.icon}</span>
-                <span className="flex-1 font-medium text-slate-700">{cmd.label}</span>
+                <span className="flex-1 font-medium text-foreground">{cmd.label}</span>
               </button>
             ))}
           </div>
@@ -193,7 +193,7 @@ export function TodoApp() {
       >
         <div className="space-y-8">
           <section className="space-y-2">
-            <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider px-1 inline-block border-b border-transparent">To Do</h2>
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1 inline-block border-b border-transparent">To Do</h2>
             <div className="space-y-0.5 min-h-[50px]">
               <SortableContext items={activeTodos} strategy={verticalListSortingStrategy}>
                 {activeTodos.map(todo => (
@@ -211,7 +211,7 @@ export function TodoApp() {
 
           {completedTodos.length > 0 && (
             <section className="space-y-2">
-              <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider px-1">Completed</h2>
+              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1">Completed</h2>
               <div className="space-y-0.5 opacity-70">
                 <SortableContext items={completedTodos} strategy={verticalListSortingStrategy}>
                   {completedTodos.map(todo => (
